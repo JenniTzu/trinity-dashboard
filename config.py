@@ -7,7 +7,7 @@ import os
 # ── API 金鑰 ──────────────────────────────────────────────
 # GitHub Actions 執行時由 Secrets 注入；本機執行使用預設值
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-FRED_API_KEY   = os.environ.get("FRED_API_KEY",   "待填入")
+FRED_API_KEY   = os.environ.get("FRED_API_KEY",   "")
 
 # ── GitHub 設定 ────────────────────────────────────────────
 GITHUB_REPO    = "JenniTzu/trinity-dashboard"
