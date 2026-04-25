@@ -1,0 +1,50 @@
+name: TRINITY Daily Update
+
+on:
+  schedule:
+    # 每週一至五 22:00 UTC = 台灣時間 06:00 AM（美股收盤後）
+    - cron: '0 22 * * 0-4'
+  workflow_dispatch:
+    # 允許從 GitHub 網頁或前台按鈕手動觸發
+
+permissions:
+  contents: write   # 允許 push docs/data.json
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run TRINITY update
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FRED_API_KEY:   ${{ secrets.FRED_API_KEY }}
+        run: |
+          # --test 跳過 should_run_today() 判斷（CI 環境不需要，由 cron 控制）
+          # deploy 由下方 git push 處理，不呼叫 deploy.py
+          python main.py --test
+
+      - name: Commit and push updated data.json
+        run: |
+          git config user.email "trinity-bot@auto.com"
+          git config user.name  "TRINITY Bot"
+          git add docs/data.json
+          git diff --cached --quiet \
+            && echo "data.json 無變更，略過 commit" \
+            || git commit -m "TRINITY auto update $(TZ='Asia/Taipei' date +'%Y-%m-%d %H:%M TWN')"
+          git push
