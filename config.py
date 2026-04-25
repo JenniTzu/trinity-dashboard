@@ -4,8 +4,15 @@
 # ============================================================
 import os
 
+# 本機開發：從 .env 載入（.env 已加入 .gitignore，不會上傳）
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # ── API 金鑰 ──────────────────────────────────────────────
-# GitHub Actions 執行時由 Secrets 注入；本機執行使用預設值
+# GitHub Actions 執行時由 Secrets 注入；本機執行從 .env 讀取
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 FRED_API_KEY   = os.environ.get("FRED_API_KEY",   "")
 
