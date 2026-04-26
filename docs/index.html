@@ -528,8 +528,9 @@ async function loadData() {
     const latest = G.latest || (G.history && G.history[G.history.length-1]) || {};
     renderAll(latest);
 
-    document.getElementById('updated-at').textContent = G.updated_at || '--';
-    checkStaleness(G.updated_at);
+    const dataTs = (G.latest || {}).timestamp || (G.latest || {}).date || '--';
+    document.getElementById('updated-at').textContent = dataTs;
+    checkStaleness(dataTs);
     document.getElementById('loader').style.display = 'none';
     document.getElementById('app').style.display = 'block';
   } catch(e) {
