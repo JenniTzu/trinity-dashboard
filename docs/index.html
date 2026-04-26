@@ -301,7 +301,6 @@ body {
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span id="stale-badge" class="stale-badge" style="display:none;"></span>
-      <div id="date-display" style="color:var(--text2);font-size:13px;"></div>
       <select id="date-selector" class="date-selector" onchange="switchDate(this.value)">
       </select>
       <button id="btn-update" class="btn-update" onclick="triggerUpdate()">↻ 更新</button>
@@ -565,7 +564,6 @@ function switchDate(dateStr) {
 // ── 主渲染函式 ──────────────────────────────────────────
 function renderAll(d) {
   if (!d) return;
-  document.getElementById('date-display').textContent = d.date || '';
   renderRiskCards(d);
   renderMarket(d);
   renderCharts(d);
