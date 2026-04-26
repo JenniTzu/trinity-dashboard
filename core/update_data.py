@@ -51,6 +51,7 @@ def update_data(use_cache: bool = False) -> dict:
     print("="*60)
 
     # ── Step 1: 抓取數據 ──────────────────────────────────
+    os.makedirs(config.DATA_DIR, exist_ok=True)
     cache_path = os.path.join(config.DATA_DIR, "raw_data_cache.json")
     if use_cache and os.path.exists(cache_path):
         print("\n[模式] 使用快取數據（不重新抓取）")
